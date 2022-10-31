@@ -1,0 +1,81 @@
+@import './variables';
+
+.dark {
+  .text {
+    color: $white;
+  }
+
+  .background {
+    background-color: $gray-900;
+  }
+
+  .button {
+    background-color: $gray-000;
+
+    svg {
+      fill: $yellow-500;
+    }
+  }
+
+  input,
+  input::placeholder {
+    color: $dark-000;
+  }
+}
+
+.light {
+  .text {
+    color: $dark-900;
+  }
+
+  .background {
+    background-color: $gray-000;
+  }
+
+  .button {
+    background-color: $dark-700;
+
+    svg {
+      fill: $violet-400;
+    }
+  }
+
+  input,
+  input::placeholder {
+    color: $dark-300;
+  }
+}
+
+.button {
+  border: none;
+  border-radius: 50%;
+  padding: 10px;
+  font-size: 20px;
+  height: 50px;
+  width: 50px;
+  position: absolute;
+}
+
+.buttonWrapper {
+  position: relative;
+
+  .button {
+    position: absolute;
+    bottom: 50px;
+    right: 50px;
+  }
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.h-full {
+  height: 100vh;
+}
+
+.flex-col {
+  flex-direction: column;
+}
