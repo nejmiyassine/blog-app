@@ -1,8 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import type { RootState } from '../store/store';
-import { changeThemeMode } from '../store/features/theme/themeSlice';
+import type { RootState } from '../../store/store';
+import { changeThemeMode } from '../../store/features/theme/themeSlice';
 import * as Bs from 'react-icons/bs';
+import './darkThemeButton.scss';
 
 const DarkThemeButton = () => {
   const isDark = useSelector((state: RootState) => state.theme.isDark);

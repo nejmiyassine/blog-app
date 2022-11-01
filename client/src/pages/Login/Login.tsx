@@ -5,35 +5,40 @@ const Login: React.FC = () => {
   return (
     <div className='auth'>
       <div className='flex flex-col h-full'>
-        <h2>Login Page</h2>
         <form className='loginForm flex flex-col'>
+          <h2 className='title'>Sign in</h2>
           <div>
-            <label htmlFor='email'>
-              Email:
-              <br />
-            </label>
             <input
+              className='authInput'
               type='email'
               name='email'
               id='email'
-              placeholder='Enter Your Email'
+              placeholder='Email Address'
               required
             />
           </div>
           <div>
-            <label htmlFor='password'>
-              Password:
-              <br />
-              <input
-                type='password'
-                name='password'
-                id='password'
-                placeholder='Enter Your Password'
-                required
-              />
-            </label>
+            <input
+              className='authInput'
+              type='password'
+              name='password'
+              id='password'
+              placeholder='Password'
+              required
+            />
           </div>
-          <button type='submit'>Sign In</button>
+          <div className='authLinks flex flex-col'>
+            <button className='authButton' type='submit'>
+              Sign in
+            </button>
+            <a className='authLink' href='/'>
+              Forget your password?
+            </a>
+          </div>
+          <div className='authMessage'>
+            <p>Dont't have a Blog account?</p>
+            <a href='/register'>Create new account</a>
+          </div>
         </form>
       </div>
     </div>

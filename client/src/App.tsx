@@ -5,7 +5,7 @@ import { RouterProvider } from 'react-router-dom';
 // Routes
 import { router } from './routes/routes';
 // Components
-import DarkThemeButton from './components/DarkThemeButton';
+import DarkThemeButton from './components/DarkThemeButton/DarkThemeButton';
 // Style
 import './App.scss';
 
@@ -14,7 +14,7 @@ const App: React.FC = () => {
 
   return (
     <div className={`app ${isDark ? 'dark' : 'light'}`}>
-      <div className='background text'>
+      <div className='h-full background text'>
         <div className='container'>
           <RouterProvider router={router} />
         </div>
