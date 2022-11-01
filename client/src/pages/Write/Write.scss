@@ -1,0 +1,88 @@
+@import '../../styles/variables';
+
+.writeContent {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+
+  .content {
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    input {
+      padding: 10px;
+      border: 1px solid lightgray;
+      background-color: transparent;
+    }
+
+    .editorContainer {
+      height: 500px;
+      overflow-y: scroll;
+      border-bottom: 1px solid lightgray;
+
+      .editor {
+        background-color: transparent;
+        height: 100%;
+        border: none;
+      }
+    }
+  }
+
+  .menu {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .item {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-evenly;
+      gap: 10px;
+      border: 1px solid lightgray;
+      padding: 10px;
+
+      .buttons {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        button {
+          border: none;
+          width: max-content;
+          padding: 10px;
+          border-radius: 5px;
+          color: $white;
+          cursor: pointer;
+        }
+
+        .save {
+          border: 1px solid $red-900;
+          background-color: $red-900;
+
+          &:hover {
+            color: $red-900;
+            background-color: transparent;
+          }
+        }
+
+        .update {
+          border: 1px solid $blue-900;
+          background-color: $blue-900;
+
+          &:hover {
+            color: $blue-900;
+            background-color: transparent;
+          }
+        }
+      }
+
+      input[type='file'] {
+        display: none;
+      }
+    }
+  }
+}

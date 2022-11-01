@@ -24,7 +24,7 @@ const Home: React.FC = () => {
               porro officiis, est perferendis, dolorum, in quia.
             </p>
             <Link to='/post/id1'>
-              <button>Read More</button>
+              <button className='readmore'>Read More</button>
             </Link>
             <div className='topics'>
               <span>UX Design</span>
@@ -54,7 +54,7 @@ const Home: React.FC = () => {
               porro officiis, est perferendis, dolorum, in quia.
             </p>
             <Link to='/post/id1'>
-              <button>Read More</button>
+              <button className='readmore'>Read More</button>
             </Link>
             <div className='topics'>
               <span>UX Design</span>

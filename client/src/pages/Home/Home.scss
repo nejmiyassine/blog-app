@@ -17,37 +17,17 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-
-        h2 {
-          margin-bottom: 10px;
-        }
+        gap: 20px;
 
         p {
-          margin: 15px 0;
-        }
-
-        button {
-          border: none;
-          color: $red-300;
-          background-color: transparent;
-          border: 1px solid $red-300;
-          width: max-content;
-          padding: 10px 20px;
-          border-radius: 5px;
-          font-weight: 600;
-          transition: all ease-in 0.3s;
-
-          &:hover {
-            color: $white;
-            background-color: $red-300;
-            cursor: pointer;
-          }
+          color: $dark-100;
+          text-align: justify;
+          font-style: italic;
         }
 
         .topics {
           display: flex;
           gap: 10px;
-          margin-top: 15px;
 
           span {
             background-color: #e8e8e8;
