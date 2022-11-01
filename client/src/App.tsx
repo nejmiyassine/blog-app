@@ -14,11 +14,13 @@ const App: React.FC = () => {
 
   return (
     <div className={`app ${isDark ? 'dark' : 'light'}`}>
-      <div className='h-full background text'>
-        <div className='container'>
-          <RouterProvider router={router} />
+      <div className='background text'>
+        <div className='appContainer'>
+          <div className='container'>
+            <RouterProvider router={router} />
+          </div>
+          <DarkThemeButton />
         </div>
-        <DarkThemeButton />
       </div>
     </div>
   );

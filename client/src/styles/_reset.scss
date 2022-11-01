@@ -17,9 +17,17 @@
     }
   }
 
-  input,
-  input::placeholder {
-    color: $dark-000;
+  .authInput {
+    background-color: $dark-400;
+    color: $white;
+  }
+
+  .authMessage {
+    a {
+      box-shadow: 5px 5px 15px -10px $dark-300;
+      background-color: $dark-400;
+      color: $white;
+    }
   }
 }
 
@@ -40,12 +48,16 @@
     }
   }
 
-  input,
-  input::placeholder {
-    color: $color-secondary;
+  .authInput {
+    background-color: $gray-200;
   }
 
-  .authButton {
+  .authMessage {
+    a {
+      box-shadow: 5px 5px 15px -10px $dark-300;
+      background-color: $color-primary;
+      color: $color-secondary;
+    }
   }
 }
 
@@ -59,10 +71,21 @@
   height: 100vh;
 }
 
+.w-full {
+  width: 100vw;
+}
+
 .flex-col {
   flex-direction: column;
 }
 
 a {
   text-decoration: none;
+  color: inherit;
+}
+
+.title {
+  font-family: $kolker-font;
+  font-size: 35px;
+  text-transform: uppercase;
 }

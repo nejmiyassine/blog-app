@@ -1,0 +1,14 @@
+@import '../../styles/variables';
+
+.single {
+  display: flex;
+  gap: 50px;
+
+  .content {
+    flex: 5;
+  }
+
+  .menu {
+    flex: 2;
+  }
+}

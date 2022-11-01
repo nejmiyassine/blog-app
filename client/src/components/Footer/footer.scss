@@ -1,0 +1,14 @@
+@import '../../styles/variables';
+
+.footer {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: $red-300;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  svg {
+    color: $red-900;
+  }
+}

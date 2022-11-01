@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Login.scss';
 
 const Login: React.FC = () => {
@@ -24,6 +25,7 @@ const Login: React.FC = () => {
               name='password'
               id='password'
               placeholder='Password'
+              autoComplete='false'
               required
             />
           </div>
@@ -31,13 +33,15 @@ const Login: React.FC = () => {
             <button className='authButton' type='submit'>
               Sign in
             </button>
-            <a className='authLink' href='/'>
+            <Link className='authLink' to='/'>
               Forget your password?
-            </a>
+            </Link>
           </div>
           <div className='authMessage'>
-            <p>Dont't have a Blog account?</p>
-            <a href='/register'>Create new account</a>
+            <p>Dont't have a Medlog account?</p>
+            <Link className='authLink' to='/register'>
+              Create new account
+            </Link>
           </div>
         </form>
       </div>

@@ -1,0 +1,52 @@
+@import '../../styles/variables';
+
+.navbar {
+  .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+
+    .logo {
+      .title {
+        font-size: 30px;
+      }
+    }
+
+    .links {
+      column-gap: 15px;
+
+      .link {
+        text-transform: uppercase;
+
+        h6 {
+          font-size: 16px;
+          font-weight: 400;
+        }
+      }
+
+      span {
+        cursor: pointer;
+        font-weight: 500;
+      }
+
+      .write {
+        background-color: $red-300;
+        width: 50px;
+        height: 50px;
+        border: 1px solid $red-300;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: $white;
+
+        &:hover {
+          background-color: $gray-200;
+          color: $red-300;
+        }
+      }
+    }
+  }
+}
