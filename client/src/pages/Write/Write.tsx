@@ -30,12 +30,12 @@ const Write: React.FC = () => {
             <b>Visibility: </b> Public
           </span>
           <input type='file' name='file' id='file' />
-          <label htmlFor='file'>
-            Upload Image{' '}
+          <div className='upload'>
             <span>
               <Bs.BsImage />
             </span>
-          </label>
+            <label htmlFor='file'>Upload Image</label>
+          </div>
           <div className='buttons'>
             <button className='save'>Save as draft</button>
             <button className='update'>Update</button>
@@ -43,11 +43,11 @@ const Write: React.FC = () => {
         </div>
         <div className='item'>
           <h2>Category</h2>
-          <div>
+          <div className='category'>
             <input type='radio' name='category' value='art' id='art' />
             <label htmlFor='art'>Art</label>
           </div>
-          <div>
+          <div className='category'>
             <input
               type='radio'
               name='category'
@@ -56,19 +56,19 @@ const Write: React.FC = () => {
             />
             <label htmlFor='technology'>Technology</label>
           </div>
-          <div>
+          <div className='category'>
             <input type='radio' name='category' value='science' id='science' />
             <label htmlFor='science'>Science</label>
           </div>
-          <div>
+          <div className='category'>
             <input type='radio' name='category' value='food' id='food' />
             <label htmlFor='food'>Food</label>
           </div>
-          <div>
+          <div className='category'>
             <input type='radio' name='category' value='cinema' id='cinema' />
             <label htmlFor='cinema'>Cinema</label>
           </div>
-          <div>
+          <div className='category'>
             <input type='radio' name='category' value='design' id='design' />
             <label htmlFor='design'>Design</label>
           </div>
