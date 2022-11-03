@@ -1,12 +1,41 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../../store/store';
+import { useLogoutUserMutation } from '../../store/api/authApi';
+import { toast } from 'react-toastify';
 import './navbar.scss';
 
 const Navbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const user = useAppSelector((state) => state.user.user);
 
-  const handleIsLoggedIn = (): void => {
-    setIsLoggedIn(!isLoggedIn);
+  const [logoutUser, { isLoading, isSuccess, error, isError }] =
+    useLogoutUserMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      // window.location.href = '/login';
+      navigate('/login');
+    }
+
+    if (isError) {
+      if (Array.isArray((error as any).data.error)) {
+        (error as any).data.error.forEach((el: any) =>
+          toast.error(el.message, {
+            position: 'top-right',
+          })
+        );
+      } else {
+        toast.error((error as any).data.message, {
+          position: 'top-right',
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading]);
+
+  const onLogoutHandler = async () => {
+    logoutUser();
   };
 
   return (
@@ -36,13 +65,22 @@ const Navbar = () => {
           <Link className='link' to='/?category=food'>
             <h6>Food</h6>
           </Link>
-          <Link className='link' to='/register'>
-            <h6>Register</h6>
-          </Link>
-          {isLoggedIn && <span>Yassine</span>}
-          <span onClick={handleIsLoggedIn}>
-            {isLoggedIn ? 'Logout' : 'Login'}
-          </span>
+          {!user && (
+            <>
+              <Link className='link' to='/register'>
+                <h6>Register</h6>
+              </Link>
+              <Link className='link' to='/register'>
+                <h6>Login</h6>
+              </Link>
+            </>
+          )}
+          {user && (
+            <>
+              <span>{user?.username}</span>
+              <button onClick={onLogoutHandler}>Logout</button>
+            </>
+          )}
           <span className='write'>
             <Link to='/write'>Write</Link>
           </span>

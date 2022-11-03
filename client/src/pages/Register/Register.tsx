@@ -1,80 +1,129 @@
-import React, { useState } from 'react';
-import * as Ai from 'react-icons/ai';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { IUser } from '../../store/api/types';
-import axios from 'axios';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { object, string, TypeOf } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'react-toastify';
+
+import { useRegisterUserMutation } from '../../store/api/authApi';
+// import { IUser } from '../../store/api/types';
 import '../Login/Login.scss';
 
+const registerSchema = object({
+  username: string().min(1, 'username is required').max(100),
+  email: string()
+    .min(1, 'Email address is required')
+    .email('Email Address is invalid'),
+  password: string()
+    .min(1, 'Password is required')
+    .min(8, 'Password must be more than 8 characters')
+    .max(32, 'Password must be less than 32 characters'),
+  passwordConfirm: string().min(1, 'Please confirm your password'),
+}).refine((data) => data.password === data.passwordConfirm, {
+  path: ['passwordConfirm'],
+  message: 'Passwords do not match',
+});
+
+export type RegisterInput = TypeOf<typeof registerSchema>;
+
 const Register: React.FC = () => {
+  const methods = useForm<RegisterInput>({
+    resolver: zodResolver(registerSchema),
+  });
+
+  const [registerUser, { isLoading, isSuccess, error, isError }] =
+    useRegisterUserMutation();
+
   const navigate = useNavigate();
 
-  const [inputs, setInputs] = useState<IUser>({
-    username: '',
-    email: '',
-    password: '',
-  });
-  const [error, setError] = useState<string>('');
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { isSubmitSuccessful },
+  } = methods;
 
-  const [seePassword, setSeePassword] = useState<Boolean>(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    try {
-      await axios.post(`/auth/register`, inputs);
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success('User registered successfully');
       navigate('/');
-    } catch (error: any) {
-      setError(error.response.data);
     }
-  };
 
-  const handleChangePassword = (): void => {
-    setSeePassword(!seePassword);
+    if (isError) {
+      console.log(error);
+      if (Array.isArray((error as any).data.error)) {
+        (error as any).data.error.forEach((el: any) =>
+          toast.error(el.message, {
+            position: 'top-right',
+          })
+        );
+      } else {
+        toast.error((error as any).data.message, {
+          position: 'top-right',
+        });
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading]);
+
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSubmitSuccessful]);
+
+  const onSubmit: SubmitHandler<RegisterInput> = (data) => {
+    // ? Executing the RegisterUser Mutation
+    registerUser(data);
   };
 
   return (
     <div className='auth'>
       <div className='flex flex-col h-full'>
-        <form onSubmit={handleSubmit} className='loginForm flex flex-col'>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className='loginForm flex flex-col'
+        >
           <h2 className='title'>Sign up</h2>
-          {error && <p>{error}</p>}
 
           <input
             className='authInput'
             type='text'
-            name='username'
+            {...register('username')}
+            // name='username'
             placeholder='Username'
-            onChange={handleChange}
             required
           />
 
           <input
             className='authInput'
             type='email'
+            {...register('email')}
             name='email'
             placeholder='Email Address'
-            onChange={handleChange}
             required
           />
 
-          <div className='authInputForm'>
-            <input
-              className='authInput'
-              type='password'
-              name='password'
-              placeholder='Password'
-              onChange={handleChange}
-              autoComplete='false'
-              required
-            />
-            <div onClick={handleChangePassword}>
-              {seePassword ? <Ai.AiFillEyeInvisible /> : <Ai.AiFillEye />}
-            </div>
-          </div>
+          <input
+            className='authInput'
+            type='password'
+            {...register('password')}
+            // name='password'
+            placeholder='Password'
+            autoComplete='false'
+            required
+          />
+
+          <input
+            className='authInput'
+            type='password'
+            {...register('passwordConfirm')}
+            // name='passwordConfirm'
+            placeholder='Confirm Password'
+            autoComplete='false'
+            required
+          />
 
           <div className='authLinks flex flex-col'>
             <button className='authButton' type='submit'>

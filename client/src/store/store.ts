@@ -1,3 +1,5 @@
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import {
   persistReducer,
   FLUSH,
@@ -7,12 +9,12 @@ import {
   PURGE,
   REGISTER,
 } from 'redux-persist';
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage';
 // Slice
 import themeReducer from './features/theme/themeSlice';
 import userReducer from './features/auth/userSlice';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import { authApi } from './api/authApi';
+import { userApi } from './api/userApi';
 
 const persistConfig = {
   key: 'root',
@@ -22,6 +24,8 @@ const persistConfig = {
 
 const reducer = combineReducers({
   theme: themeReducer,
+  [authApi.reducerPath]: authApi.reducer,
+  [userApi.reducerPath]: userApi.reducer,
   user: userReducer,
 });
 
@@ -34,7 +38,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }),
+    }).concat([authApi.middleware, userApi.middleware]),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
