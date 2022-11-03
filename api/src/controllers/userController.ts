@@ -1,5 +1,11 @@
 import { Request, Response } from 'express';
+import { db } from '../db/db';
 
 export const userController = (req: Request, res: Response) => {
-  res.json('This is userController');
+  const q = 'SELECT * FROM users';
+
+  db.query(q, (err, data) => {
+    if (err) return res.json(err);
+    return res.json(data);
+  });
 };

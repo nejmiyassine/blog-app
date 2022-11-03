@@ -8,8 +8,11 @@ import {
   REGISTER,
 } from 'redux-persist';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import themeReducer from './features/theme/themeSlice';
 import storage from 'redux-persist/lib/storage';
+// Slice
+import themeReducer from './features/theme/themeSlice';
+import userReducer from './features/auth/userSlice';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
 const persistConfig = {
   key: 'root',
@@ -19,6 +22,7 @@ const persistConfig = {
 
 const reducer = combineReducers({
   theme: themeReducer,
+  user: userReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);
@@ -33,7 +37,7 @@ export const store = configureStore({
     }),
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

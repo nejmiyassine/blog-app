@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar/Navbar';
 // Pages
 import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
+import Profile from '../pages/Profile/Profile';
 import Register from '../pages/Register/Register';
 import Single from '../pages/Single/Single';
 import Write from '../pages/Write/Write';
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       {
         path: '/write',
         element: <Write />,
+      },
+      {
+        path: '/profile',
+        element: <Profile />,
       },
     ],
   },

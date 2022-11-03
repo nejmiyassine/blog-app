@@ -1,10 +1,36 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import * as Ai from 'react-icons/ai';
+import { Link, useNavigate } from 'react-router-dom';
+import { IUser } from '../../store/api/types';
+import axios from 'axios';
 import '../Login/Login.scss';
 
 const Register: React.FC = () => {
+  const navigate = useNavigate();
+
+  const [inputs, setInputs] = useState<IUser>({
+    username: '',
+    email: '',
+    password: '',
+  });
+  const [error, setError] = useState<string>('');
+
   const [seePassword, setSeePassword] = useState<Boolean>(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    try {
+      await axios.post(`/auth/register`, inputs);
+      navigate('/');
+    } catch (error: any) {
+      setError(error.response.data);
+    }
+  };
 
   const handleChangePassword = (): void => {
     setSeePassword(!seePassword);
@@ -13,35 +39,35 @@ const Register: React.FC = () => {
   return (
     <div className='auth'>
       <div className='flex flex-col h-full'>
-        <form className='loginForm flex flex-col'>
+        <form onSubmit={handleSubmit} className='loginForm flex flex-col'>
           <h2 className='title'>Sign up</h2>
-          <div>
-            <input
-              className='authInput'
-              type='text'
-              name='username'
-              id='username'
-              placeholder='Username'
-              required
-            />
-          </div>
-          <div>
-            <input
-              className='authInput'
-              type='email'
-              name='email'
-              id='email'
-              placeholder='Email Address'
-              required
-            />
-          </div>
+          {error && <p>{error}</p>}
+
+          <input
+            className='authInput'
+            type='text'
+            name='username'
+            placeholder='Username'
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            className='authInput'
+            type='email'
+            name='email'
+            placeholder='Email Address'
+            onChange={handleChange}
+            required
+          />
+
           <div className='authInputForm'>
             <input
               className='authInput'
               type='password'
               name='password'
-              id='password'
               placeholder='Password'
+              onChange={handleChange}
               autoComplete='false'
               required
             />
@@ -49,28 +75,7 @@ const Register: React.FC = () => {
               {seePassword ? <Ai.AiFillEyeInvisible /> : <Ai.AiFillEye />}
             </div>
           </div>
-          <div>
-            <input
-              className='authInput'
-              type='password'
-              name='confirmPassword'
-              id='confirmPassword'
-              placeholder='Confirm Password'
-              autoComplete='false'
-              required
-            />
-          </div>
-          <div>
-            <input
-              className='authInput'
-              type='date'
-              name='date'
-              id='date'
-              placeholder='Birth Date'
-              autoComplete='false'
-              required
-            />
-          </div>
+
           <div className='authLinks flex flex-col'>
             <button className='authButton' type='submit'>
               Sign up

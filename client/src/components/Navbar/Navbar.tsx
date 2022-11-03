@@ -36,6 +36,9 @@ const Navbar = () => {
           <Link className='link' to='/?category=food'>
             <h6>Food</h6>
           </Link>
+          <Link className='link' to='/register'>
+            <h6>Register</h6>
+          </Link>
           {isLoggedIn && <span>Yassine</span>}
           <span onClick={handleIsLoggedIn}>
             {isLoggedIn ? 'Logout' : 'Login'}
