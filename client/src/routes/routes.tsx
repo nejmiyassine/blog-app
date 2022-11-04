@@ -10,8 +10,10 @@ import Profile from '../pages/Profile/Profile';
 import Register from '../pages/Register/Register';
 import Single from '../pages/Single/Single';
 import Write from '../pages/Write/Write';
+import ProtectedRoute from '../utils/ProtectedRoute';
+import ProtectedRouteForAuth from '../utils/ProtectedRouteForAuth';
 
-const Layout: React.FC = () => {
+export const Layout: React.FC = () => {
   return (
     <>
       <Navbar />
@@ -34,6 +36,11 @@ export const router = createBrowserRouter([
         path: '/post/:postId',
         element: <Single />,
       },
+    ],
+  },
+  {
+    element: <ProtectedRoute />,
+    children: [
       {
         path: '/write',
         element: <Write />,
@@ -45,11 +52,16 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: '/register',
-    element: <Register />,
-  },
-  {
-    path: '/login',
-    element: <Login />,
+    element: <ProtectedRouteForAuth />,
+    children: [
+      {
+        path: '/register',
+        element: <Register />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
+      },
+    ],
   },
 ]);

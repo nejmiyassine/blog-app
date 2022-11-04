@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../../store/store';
-import { useLogoutUserMutation } from '../../store/api/authApi';
+import { useAppSelector } from '../../redux/store';
+import { useLogoutUserMutation } from '../../redux/api/authApi';
 import { toast } from 'react-toastify';
 import './navbar.scss';
+import { logout } from '../../redux/features/auth/userSlice';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useAppSelector((state) => state.user.user);
 
   const [logoutUser, { isLoading, isSuccess, error, isError }] =
@@ -15,20 +18,15 @@ const Navbar = () => {
   useEffect(() => {
     if (isSuccess) {
       // window.location.href = '/login';
+      toast.success('you logged out successfully');
       navigate('/login');
     }
 
     if (isError) {
       if (Array.isArray((error as any).data.error)) {
-        (error as any).data.error.forEach((el: any) =>
-          toast.error(el.message, {
-            position: 'top-right',
-          })
-        );
+        (error as any).data.error.forEach((el: any) => toast.error(el.message));
       } else {
-        toast.error((error as any).data.message, {
-          position: 'top-right',
-        });
+        toast.error((error as any).data.message);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -36,6 +34,7 @@ const Navbar = () => {
 
   const onLogoutHandler = async () => {
     logoutUser();
+    dispatch(logout());
   };
 
   return (
@@ -70,7 +69,7 @@ const Navbar = () => {
               <Link className='link' to='/register'>
                 <h6>Register</h6>
               </Link>
-              <Link className='link' to='/register'>
+              <Link className='link' to='/login'>
                 <h6>Login</h6>
               </Link>
             </>

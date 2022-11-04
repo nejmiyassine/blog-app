@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import type { RootState } from './store/store';
+import type { RootState } from './redux/store';
 import { RouterProvider } from 'react-router-dom';
 // Routes
 import { router } from './routes/routes';

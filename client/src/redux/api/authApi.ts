@@ -1,15 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { LoginInput } from '../../pages/Login/Login';
 import { RegisterInput } from '../../pages/Register/Register';
+import { setUser } from '../features/auth/userSlice';
 import { IGenericResponse } from './types';
-import { userApi } from './userApi';
-
-const BASE_URL = process.env.REACT_APP_SERVER_ENDPOINT as string;
+import { BASE_URL } from '../CONSTANTS';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${BASE_URL}api/auth`,
+    baseUrl: `${BASE_URL}/auth`,
   }),
   endpoints: (builder) => ({
     registerUser: builder.mutation<IGenericResponse, RegisterInput>({
@@ -22,7 +21,7 @@ export const authApi = createApi({
       },
     }),
     loginUser: builder.mutation<
-      { access_token: string; status: string },
+      { id: number; username: string; email: string; password: string },
       LoginInput
     >({
       query(data) {
@@ -33,10 +32,18 @@ export const authApi = createApi({
           credentials: 'include',
         };
       },
+      transformResponse: (result: {
+        id: number;
+        username: string;
+        email: string;
+        password: string;
+      }) => {
+        return result;
+      },
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
-          await queryFulfilled;
-          await dispatch(userApi.endpoints.getMe.initiate(null));
+          const { data } = await queryFulfilled;
+          dispatch(setUser(data));
         } catch (error) {}
       },
     }),
@@ -44,6 +51,7 @@ export const authApi = createApi({
       query() {
         return {
           url: 'logout',
+          method: 'POST',
           credentials: 'include',
         };
       },

@@ -4,9 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { object, string, TypeOf } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
-
-import { useRegisterUserMutation } from '../../store/api/authApi';
-// import { IUser } from '../../store/api/types';
+import { useRegisterUserMutation } from '../../redux/api/authApi';
 import '../Login/Login.scss';
 
 const registerSchema = object({
@@ -45,7 +43,7 @@ const Register: React.FC = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success('User registered successfully');
+      toast.success('you registered successfully');
       navigate('/');
     }
 
@@ -74,7 +72,7 @@ const Register: React.FC = () => {
   }, [isSubmitSuccessful]);
 
   const onSubmit: SubmitHandler<RegisterInput> = (data) => {
-    // ? Executing the RegisterUser Mutation
+    // Executing the RegisterUser Mutation
     registerUser(data);
   };
 
@@ -91,7 +89,6 @@ const Register: React.FC = () => {
             className='authInput'
             type='text'
             {...register('username')}
-            // name='username'
             placeholder='Username'
             required
           />
@@ -109,7 +106,6 @@ const Register: React.FC = () => {
             className='authInput'
             type='password'
             {...register('password')}
-            // name='password'
             placeholder='Password'
             autoComplete='false'
             required
@@ -119,7 +115,6 @@ const Register: React.FC = () => {
             className='authInput'
             type='password'
             {...register('passwordConfirm')}
-            // name='passwordConfirm'
             placeholder='Confirm Password'
             autoComplete='false'
             required

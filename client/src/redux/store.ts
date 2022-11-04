@@ -14,7 +14,7 @@ import storage from 'redux-persist/lib/storage';
 import themeReducer from './features/theme/themeSlice';
 import userReducer from './features/auth/userSlice';
 import { authApi } from './api/authApi';
-import { userApi } from './api/userApi';
+import { postsApi } from './api/postsApi';
 
 const persistConfig = {
   key: 'root',
@@ -25,7 +25,7 @@ const persistConfig = {
 const reducer = combineReducers({
   theme: themeReducer,
   [authApi.reducerPath]: authApi.reducer,
-  [userApi.reducerPath]: userApi.reducer,
+  [postsApi.reducerPath]: postsApi.reducer,
   user: userReducer,
 });
 
@@ -38,7 +38,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat([authApi.middleware, userApi.middleware]),
+    }).concat([authApi.middleware, postsApi.middleware]),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

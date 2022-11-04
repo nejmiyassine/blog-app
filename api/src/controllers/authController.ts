@@ -22,7 +22,6 @@ export const register = (req: Request, res: Response) => {
   db.query(checkUser, [req.body.email, req.body.username], (err, data: any) => {
     if (err) return res.json(err);
     if (data.length) return res.status(409).json('User already exists!');
-    console.log('register', data);
 
     // Hash Password
     const salt = bcrypt.genSaltSync(10);
@@ -81,5 +80,5 @@ export const logout = (req: Request, res: Response) => {
       secure: true,
     })
     .status(200)
-    .json('User has been logged out');
+    .json('User has been logged out.');
 };

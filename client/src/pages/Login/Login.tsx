@@ -3,8 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { object, string, TypeOf } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'react-toastify';
-import { useLoginUserMutation } from '../../store/api/authApi';
+import { ToastContainer, toast } from 'react-toastify';
+import { useLoginUserMutation } from '../../redux/api/authApi';
+import 'react-toastify/dist/ReactToastify.css';
 import './Login.scss';
 
 const loginSchema = object({
@@ -39,20 +40,15 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success('You successfully logged in');
+      toast.success('you logged in successfully');
       navigate('/profile');
     }
+
     if (isError) {
       if (Array.isArray((error as any).data.error)) {
-        (error as any).data.error.forEach((el: any) =>
-          toast.error(el.message, {
-            position: 'top-right',
-          })
-        );
+        (error as any).data.error.forEach((el: any) => toast.error(el.message));
       } else {
-        toast.error((error as any).data.message, {
-          position: 'top-right',
-        });
+        toast.error((error as any).data.message);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,49 +68,52 @@ const Login: React.FC = () => {
 
   return (
     <div className='auth'>
-      <div className='flex flex-col h-full'>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className='loginForm flex flex-col'
-        >
-          <h2 className='title'>Sign in</h2>
-          <div>
-            <input
-              className='authInput'
-              type='email'
-              {...register('email')}
-              id='email'
-              placeholder='Email Address'
-              required
-            />
-          </div>
-          <div>
-            <input
-              className='authInput'
-              type='password'
-              {...register('password')}
-              id='password'
-              placeholder='Password'
-              autoComplete='false'
-              required
-            />
-          </div>
+      <ToastContainer />
+      <div>
+        <div className='flex flex-col h-full'>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className='loginForm flex flex-col'
+          >
+            <h2 className='title'>Sign in</h2>
+            <div>
+              <input
+                className='authInput'
+                type='email'
+                {...register('email')}
+                id='email'
+                placeholder='Email Address'
+                required
+              />
+            </div>
+            <div>
+              <input
+                className='authInput'
+                type='password'
+                {...register('password')}
+                id='password'
+                placeholder='Password'
+                autoComplete='false'
+                required
+              />
+            </div>
 
-          <div className='authLinks flex flex-col'>
-            <button className='authButton' type='submit'>
-              Sign in
-            </button>
-            <Link className='authLink' to='/'>
-              Forget your password?
-            </Link>
-          </div>
-          <div className='authMessage'>
-            <p>Dont't have a Medlog account?</p>
-            <Link className='authLink' to='/register'>
-              Create new account
-            </Link>
-          </div>
-        </form>
+            <div className='authLinks flex flex-col'>
+              <button className='authButton' type='submit'>
+                Sign in
+              </button>
+              <Link className='authLink' to='/'>
+                Forget your password?
+              </Link>
+            </div>
+            <div className='authMessage'>
+              <p>Dont't have a Medlog account?</p>
+              <Link className='authLink' to='/register'>
+                Create new account
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
