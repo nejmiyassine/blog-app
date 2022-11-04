@@ -1,13 +1,12 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import HomeHeader from '../../components/HomeHeader/HomeHeader';
 import { Post, useGetAllPostsQuery } from '../../redux/api/postsApi';
 import './Home.scss';
 
 const Home: React.FC = () => {
-  const { data } = useGetAllPostsQuery(undefined);
-
-  console.log(data);
+  const category = useLocation().search;
+  const { data } = useGetAllPostsQuery(category);
 
   return (
     <div className='home'>
@@ -21,11 +20,11 @@ const Home: React.FC = () => {
               <hr />
               <div className='post'>
                 <div className='content'>
-                  <Link to='/post/id1'>
+                  <Link to={`/post/${post.id}`}>
                     <h2>{post.title}</h2>
                   </Link>
                   <p>{post.description}</p>
-                  <Link to='/post/id1'>
+                  <Link to={`/post/${post.id}`}>
                     <button className='readmore'>Read More</button>
                   </Link>
                   <div className='category'>

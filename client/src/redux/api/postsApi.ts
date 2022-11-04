@@ -16,14 +16,28 @@ export type PostsData = Post[];
 
 export const postsApi = createApi({
   reducerPath: 'postsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: `${BASE_URL}` }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${BASE_URL}/posts` }),
   endpoints: (builder) => ({
     // Fisrt Type: Posts type of Data we wanna get back
     // Second Type: Type of args
-    getAllPosts: builder.query<PostsData, undefined>({
-      query: () => '/posts',
+    getAllPosts: builder.query<PostsData, string>({
+      query: (category) => `${category}`,
+    }),
+    getPostById: builder.query<
+      Post & { username: string; userImg: string },
+      string
+    >({
+      query: (postId) => `/${postId}`,
+    }),
+    deletePostById: builder.mutation<{ id: number }, string>({
+      query(id) {
+        return {
+          url: `${id}`,
+          method: 'DELETE',
+        };
+      },
     }),
   }),
 });
 
-export const { useGetAllPostsQuery } = postsApi;
+export const { useGetAllPostsQuery, useGetPostByIdQuery } = postsApi;
