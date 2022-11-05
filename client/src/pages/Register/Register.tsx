@@ -44,7 +44,7 @@ const Register: React.FC = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success('you registered successfully');
-      navigate('/');
+      navigate('/login');
     }
 
     if (isError) {

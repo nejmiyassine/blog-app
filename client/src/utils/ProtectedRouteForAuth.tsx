@@ -6,9 +6,7 @@ const ProtectedRouteForAuth = () => {
   const userState = useAppSelector((state) => state.user.user);
   let location = useLocation();
 
-  React.useEffect(() => {
-    console.log(location.pathname);
-  }, [location.pathname]);
+  React.useEffect(() => {}, [location.pathname]);
 
   return (location.pathname === '/login' ||
     location.pathname === '/register') &&

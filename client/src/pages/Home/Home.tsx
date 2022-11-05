@@ -6,7 +6,8 @@ import './Home.scss';
 
 const Home: React.FC = () => {
   const category = useLocation().search;
-  const { data } = useGetAllPostsQuery(category);
+  const isCategory: string = category === '' ? '/' : category;
+  const { data } = useGetAllPostsQuery(isCategory);
 
   return (
     <div className='home'>

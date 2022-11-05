@@ -2,15 +2,39 @@ import React, { useState } from 'react';
 import * as Bs from 'react-icons/bs';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useAddNewPostMutation } from '../../redux/api/postsApi';
 import './write.scss';
 
 const Write: React.FC = () => {
-  const [value, setValue] = useState('');
+  const [addNewPost] = useAddNewPostMutation();
+
+  const [value, setValue] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
+  const [file, setFile] = useState<string | null>(null);
+  const [category, setCategory] = useState<string>('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    let data = {
+      title,
+      description: value,
+      img: file,
+      category,
+      date: new Date(),
+    };
+
+    addNewPost(data);
+  };
 
   return (
     <div className='writeContent'>
       <div className='content'>
-        <input type='text' placeholder='Title' />
+        <input
+          type='text'
+          placeholder='Title'
+          onChange={(e) => setTitle(e.target.value)}
+        />
         <div className='editorContainer'>
           <ReactQuill
             className='editor'
@@ -29,7 +53,13 @@ const Write: React.FC = () => {
           <span>
             <b>Visibility: </b> Public
           </span>
-          <input type='file' name='file' id='file' />
+          <input
+            type='file'
+            name='file'
+            id='file'
+            onChange={(e) => setFile(e.target.files[0])}
+            required
+          />
           <div className='upload'>
             <span>
               <Bs.BsImage />

@@ -3,7 +3,7 @@ import { db } from '../db/db';
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-interface User {
+export interface User {
   username: string;
   email: string;
   password: string;

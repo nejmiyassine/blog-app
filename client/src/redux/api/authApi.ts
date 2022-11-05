@@ -12,34 +12,28 @@ export const authApi = createApi({
   }),
   endpoints: (builder) => ({
     registerUser: builder.mutation<IGenericResponse, RegisterInput>({
-      query(data) {
-        return {
-          url: 'register',
-          method: 'POST',
-          body: data,
-        };
-      },
+      query: (data) => ({
+        url: 'register',
+        method: 'POST',
+        body: data,
+      }),
     }),
     loginUser: builder.mutation<
       { id: number; username: string; email: string; password: string },
       LoginInput
     >({
-      query(data) {
-        return {
-          url: 'login',
-          method: 'POST',
-          body: data,
-          credentials: 'include',
-        };
-      },
+      query: (data) => ({
+        url: 'login',
+        method: 'POST',
+        body: data,
+        credentials: 'include',
+      }),
       transformResponse: (result: {
         id: number;
         username: string;
         email: string;
         password: string;
-      }) => {
-        return result;
-      },
+      }) => result,
       async onQueryStarted(args, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
@@ -48,13 +42,11 @@ export const authApi = createApi({
       },
     }),
     logoutUser: builder.mutation<void, void>({
-      query() {
-        return {
-          url: 'logout',
-          method: 'POST',
-          credentials: 'include',
-        };
-      },
+      query: () => ({
+        url: 'logout',
+        method: 'POST',
+        credentials: 'include',
+      }),
     }),
   }),
 });

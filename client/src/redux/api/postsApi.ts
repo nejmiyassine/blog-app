@@ -20,8 +20,11 @@ export const postsApi = createApi({
   endpoints: (builder) => ({
     // Fisrt Type: Posts type of Data we wanna get back
     // Second Type: Type of args
-    getAllPosts: builder.query<PostsData, string>({
+    getAllPosts: builder.query<PostsData, string | undefined>({
       query: (category) => `${category}`,
+    }),
+    getPostsByCategory: builder.query<PostsData, string>({
+      query: (category) => `/?${category}`,
     }),
     getPostById: builder.query<
       Post & { username: string; userImg: string },
@@ -29,15 +32,37 @@ export const postsApi = createApi({
     >({
       query: (postId) => `/${postId}`,
     }),
-    deletePostById: builder.mutation<{ id: number }, string>({
-      query(id) {
-        return {
-          url: `${id}`,
-          method: 'DELETE',
-        };
-      },
+    deletePostById: builder.mutation<{ id: string }, string>({
+      query: (id) => ({
+        url: `${id}`,
+        method: 'DELETE',
+        credentials: 'include',
+      }),
+    }),
+    addNewPost: builder.mutation({
+      query: (payload) => ({
+        url: '/',
+        method: 'POST',
+        body: payload,
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      }),
+    }),
+    deletePost: builder.mutation<{ id: string }, string>({
+      query: (id) => ({
+        url: `${id}`,
+        method: 'DELETE',
+        credentials: 'include',
+      }),
     }),
   }),
 });
 
-export const { useGetAllPostsQuery, useGetPostByIdQuery } = postsApi;
+export const {
+  useGetPostsByCategoryQuery,
+  useGetAllPostsQuery,
+  useGetPostByIdQuery,
+  useAddNewPostMutation,
+  useDeletePostMutation,
+} = postsApi;

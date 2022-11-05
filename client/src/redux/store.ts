@@ -20,6 +20,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage,
+  whitelist: ['user', 'theme'],
 };
 
 const reducer = combineReducers({

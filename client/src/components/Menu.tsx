@@ -1,34 +1,27 @@
 import React from 'react';
+import { Post, useGetPostsByCategoryQuery } from '../redux/api/postsApi';
 
-const Menu: React.FC = () => {
+interface MenuProps {
+  category: string;
+}
+
+const Menu: React.FC<MenuProps> = ({ category }) => {
+  const { data: recommendedPosts } = useGetPostsByCategoryQuery(category);
+  console.log(recommendedPosts);
+
   return (
     <>
       <h2>Posts you may like</h2>
-      {/* Map */}
-      <div className='post'>
-        <img
-          src='https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8dXglMjBkZXNpZ258ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60'
-          alt='post-1'
-        />
-        <h3>Post title 1</h3>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Error minus.
-        </p>
-        <button className='readmore'>Read More</button>
-      </div>
-
-      <div className='post'>
-        <img
-          src='https://images.unsplash.com/photo-1545235617-9465d2a55698?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8dXglMjBkZXNpZ258ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60'
-          alt='post-1'
-        />
-        <h3>Post title 1</h3>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Error minus.
-        </p>
-        <button className='readmore'>Read More</button>
-      </div>
-      {/* End Map */}
+      {recommendedPosts &&
+        recommendedPosts.map((post: Post) => (
+          <>
+            <hr />
+            <div className='post'>
+              <img src={post.img} alt={`${post.title}-${post.category}`} />
+              <h3>{post.title}</h3>
+            </div>
+          </>
+        ))}
     </>
   );
 };
