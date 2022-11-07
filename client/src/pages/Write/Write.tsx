@@ -1,29 +1,84 @@
 import React, { useState } from 'react';
 import * as Bs from 'react-icons/bs';
 import ReactQuill from 'react-quill';
-import { useAddNewPostMutation } from '../../redux/api/postsApi';
+import { useLocation, useNavigate } from 'react-router-dom';
+import moment from 'moment';
+import {
+  useAddNewPostMutation,
+  useUpdatePostMutation,
+  useUploadFileMutation,
+} from '../../redux/api/postsApi';
 import 'react-quill/dist/quill.snow.css';
 import './write.scss';
 
 const Write: React.FC = () => {
-  const [value, setValue] = useState<string>('');
-  const [title, setTitle] = useState<string>('');
-  const [files, setFiles] = useState(null);
-  const [category, setCategory] = useState('art');
+  const categories: { id: number; category: string }[] = [
+    { id: 1, category: 'art' },
+    { id: 2, category: 'technology' },
+    { id: 3, category: 'science' },
+    { id: 4, category: 'cinema' },
+    { id: 5, category: 'design' },
+    { id: 6, category: 'food' },
+  ];
+
+  const navigate = useNavigate();
+  const state = useLocation().state;
+  const [value, setValue] = useState<string>(state?.value || '');
+  const [title, setTitle] = useState<string>(state?.title || '');
+  const [file, setFile] = useState<any>(null);
+  const [categoryState, setCategoryState] = useState(
+    state?.categoryState || 'art'
+  );
 
   const [addNewPost] = useAddNewPostMutation();
+  const [updatePost] = useUpdatePostMutation();
+  const [uploadFile] = useUploadFileMutation();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setTitle(e.target.value);
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setCategoryState(e.target.value);
+
+  const handleFile = (e: any) => setFile(e.target.files[0]);
+
+  const upload = () => {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      return uploadFile(formData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let data = {
+    const imgUrl = await upload();
+    let { data }: any = imgUrl;
+
+    let updateData = {
       title,
-      img: files,
+      img: file ? data : '',
       description: value,
-      category,
+      category: categoryState,
     };
 
-    console.log(data);
+    let postData = {
+      ...updateData,
+      date: moment(Date.now()).format('YYYY-MM-DD HH:mm:ss'),
+    };
+
+    try {
+      state
+        ? updatePost({ id: state?.id, post: updateData })
+        : addNewPost(postData);
+      navigate('/');
+    } catch (error) {}
+
+    console.log('updateData', updateData);
+    console.log('postData', postData);
   };
 
   return (
@@ -32,10 +87,10 @@ const Write: React.FC = () => {
         <div className='content'>
           <input
             type='text'
+            name='title'
             placeholder='Blog Title'
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setTitle(e.target.value)
-            }
+            onChange={handleTitleChange}
+            required
           />
           <div className='editorContainer'>
             <ReactQuill
@@ -57,10 +112,11 @@ const Write: React.FC = () => {
             </span>
             <input
               type='file'
-              onChange={(e: any) => setFiles(e.target.files[0])}
+              name='file'
               id='file'
-              accept='image/png, image/jpeg'
-              required
+              onChange={handleFile}
+              accept='image/png, image/jpeg, image/jpg'
+              // required
             />
             <div className='upload'>
               <span>
@@ -75,78 +131,21 @@ const Write: React.FC = () => {
           </div>
           <div className='item'>
             <h2>Category</h2>
-            <div className='category'>
-              <input
-                type='radio'
-                name='category'
-                value='art'
-                id='art'
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setCategory(e.target.value)
-                }
-              />
-              <label htmlFor='art'>Art</label>
-            </div>
-            <div className='category'>
-              <input
-                type='radio'
-                name='category'
-                value='technology'
-                id='technology'
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setCategory(e.target.value)
-                }
-              />
-              <label htmlFor='technology'>Technology</label>
-            </div>
-            <div className='category'>
-              <input
-                type='radio'
-                name='category'
-                value='science'
-                id='science'
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setCategory(e.target.value)
-                }
-              />
-              <label htmlFor='science'>Science</label>
-            </div>
-            <div className='category'>
-              <input
-                type='radio'
-                name='category'
-                value='food'
-                id='food'
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setCategory(e.target.value)
-                }
-              />
-              <label htmlFor='food'>Food</label>
-            </div>
-            <div className='category'>
-              <input
-                type='radio'
-                name='category'
-                value='cinema'
-                id='cinema'
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setCategory(e.target.value)
-                }
-              />
-              <label htmlFor='cinema'>Cinema</label>
-            </div>
-            <div className='category'>
-              <input
-                type='radio'
-                name='category'
-                value='design'
-                id='design'
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setCategory(e.target.value)
-                }
-              />
-              <label htmlFor='design'>Design</label>
-            </div>
+
+            {categories.map(({ id, category }) => (
+              <div className='category' key={id}>
+                <input
+                  type='radio'
+                  checked={categoryState === category}
+                  name='category'
+                  value={category}
+                  id={category}
+                  onChange={handleCategoryChange}
+                  required
+                />
+                <label htmlFor={category}>{category.toUpperCase()}</label>
+              </div>
+            ))}
           </div>
         </div>
       </div>

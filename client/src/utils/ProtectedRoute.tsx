@@ -1,6 +1,6 @@
 import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../redux/store';
-import { Layout } from '../routes/routes';
+import Layout from './Layout';
 
 const ProtectedRoute = () => {
   const userState = useAppSelector((state) => state.user.user);

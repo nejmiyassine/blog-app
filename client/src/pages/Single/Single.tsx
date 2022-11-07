@@ -10,6 +10,7 @@ import {
 import { useAppSelector } from '../../redux/store';
 import Menu from '../../components/Menu';
 import './single.scss';
+import { getText } from '../../helpers/helpers';
 
 const Single: React.FC = () => {
   const user = useAppSelector((state) => state.user.user);
@@ -50,7 +51,19 @@ const Single: React.FC = () => {
       {isGetSuccess && (
         <>
           <div className='content' key={postId}>
-            <img className='blogimg' src={data?.img} alt={data?.title} />
+            {data.img.includes('http') ? (
+              <img
+                className='blogimg'
+                src={`${data.img}`}
+                alt={`${data.title}`}
+              />
+            ) : (
+              <img
+                className='blogimg'
+                src={`../upload/${data.img}`}
+                alt={`${data.title}`}
+              />
+            )}
             <div className='user'>
               {!data?.userImg ? (
                 <img
@@ -66,7 +79,11 @@ const Single: React.FC = () => {
               </div>
               {user && user?.username === data?.username && (
                 <div className='icons'>
-                  <Link className='icon edit' to={`/write?edit=${postId}`}>
+                  <Link
+                    className='icon edit'
+                    to={`/write?edit=${postId}`}
+                    state={data}
+                  >
                     <Md.MdEdit />
                   </Link>
                   <button className='icon delete' onClick={deletePostById}>
@@ -75,9 +92,8 @@ const Single: React.FC = () => {
                 </div>
               )}
             </div>
-
             <h2>{data?.title}</h2>
-            {data?.description}
+            {data.description && getText(data.description)}
           </div>
 
           <div className='menu'>

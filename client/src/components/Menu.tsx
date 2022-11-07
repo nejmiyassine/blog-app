@@ -7,20 +7,24 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({ category }) => {
   const { data: recommendedPosts } = useGetPostsByCategoryQuery(category);
-  console.log(recommendedPosts);
 
   return (
     <>
       <h2>Posts you may like</h2>
       {recommendedPosts &&
-        recommendedPosts.map((post: Post) => (
-          <>
-            <hr />
+        recommendedPosts.length > 3 &&
+        recommendedPosts.slice(0, 3).map((post: Post) => (
+          <div key={post.id}>
             <div className='post'>
-              <img src={post.img} alt={`${post.title}-${post.category}`} />
+              {post.img.includes('http') ? (
+                <img src={`${post.img}`} alt={`${post.title}`} />
+              ) : (
+                <img src={`../upload/${post.img}`} alt={`${post.title}`} />
+              )}
+              {/* <img src={post.img} alt={`${post.title}-${post.category}`} /> */}
               <h3>{post.title}</h3>
             </div>
-          </>
+          </div>
         ))}
     </>
   );

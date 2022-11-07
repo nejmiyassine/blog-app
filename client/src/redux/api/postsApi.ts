@@ -14,39 +14,65 @@ export interface Post {
 
 export type PostsData = Post[];
 
+export interface IPostResponse {
+  category: string;
+  description: string;
+  title: string;
+  img: any;
+}
+
 export const postsApi = createApi({
   reducerPath: 'postsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: `${BASE_URL}/posts` }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${BASE_URL}` }),
   endpoints: (builder) => ({
     // Fisrt Type: Posts type of Data we wanna get back
     // Second Type: Type of args
     getAllPosts: builder.query<PostsData, string | undefined>({
-      query: (category) => `${category}`,
+      query: (category) => `/posts${category}`,
     }),
     getPostsByCategory: builder.query<PostsData, string>({
-      query: (category) => `/?${category}`,
+      query: (category) => `/posts/?${category}`,
     }),
     getPostById: builder.query<
       Post & { username: string; userImg: string },
       string
     >({
-      query: (postId) => `/${postId}`,
+      query: (postId) => `/posts/${postId}`,
     }),
     deletePostById: builder.mutation<{ id: string }, string>({
       query: (id) => ({
-        url: `${id}`,
+        url: `/posts/${id}`,
         method: 'DELETE',
         credentials: 'include',
       }),
     }),
-    addNewPost: builder.mutation({
+    uploadFile: builder.mutation({
       query: (payload) => ({
-        url: '/',
+        url: '/upload',
         method: 'POST',
         body: payload,
-        headers: {
-          'Content-type': 'application/json; charset=UTF-8',
-        },
+      }),
+    }),
+    addNewPost: builder.mutation<
+      IPostResponse,
+      IPostResponse & { date: string }
+    >({
+      query: (payload) => ({
+        url: '/posts',
+        method: 'POST',
+        credentials: 'include',
+        body: payload,
+      }),
+    }),
+    updatePost: builder.mutation<
+      IPostResponse,
+      { id: string; post: IPostResponse }
+    >({
+      query: ({ id, post }) => ({
+        url: `/posts/${id}`,
+        method: 'PUT',
+        credentials: 'include',
+        body: post,
       }),
     }),
     deletePost: builder.mutation<{ id: string }, string>({
@@ -63,6 +89,8 @@ export const {
   useGetPostsByCategoryQuery,
   useGetAllPostsQuery,
   useGetPostByIdQuery,
+  useUploadFileMutation,
   useAddNewPostMutation,
+  useUpdatePostMutation,
   useDeletePostMutation,
 } = postsApi;

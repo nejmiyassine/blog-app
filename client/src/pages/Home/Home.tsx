@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import HomeHeader from '../../components/HomeHeader/HomeHeader';
+import { getText } from '../../helpers/helpers';
 import { Post, useGetAllPostsQuery } from '../../redux/api/postsApi';
 import './Home.scss';
 
@@ -22,9 +23,17 @@ const Home: React.FC = () => {
               <div className='post'>
                 <div className='content'>
                   <Link to={`/post/${post.id}`}>
-                    <h2>{post.title}</h2>
+                    <h2>
+                      {post.title.length > 50
+                        ? post.title.substring(0, 50) + '...'
+                        : post.title}
+                    </h2>
                   </Link>
-                  <p>{post.description}</p>
+                  <p>
+                    {post.description.length > 350
+                      ? getText(post.description)?.substring(0, 350) + '...'
+                      : getText(post.description)}
+                  </p>
                   <Link to={`/post/${post.id}`}>
                     <button className='readmore'>Read More</button>
                   </Link>
@@ -34,14 +43,18 @@ const Home: React.FC = () => {
                 </div>
 
                 <div className='img'>
-                  <img src={`${post.img}`} alt={`${post.title}`} />
+                  {post.img.includes('http') ? (
+                    <img src={`${post.img}`} alt={`${post.title}`} />
+                  ) : (
+                    <img src={`./upload/${post.img}`} alt={`${post.title}`} />
+                  )}
                 </div>
               </div>
             </div>
           ))
         ) : (
           <div>
-            <h2>Data Not Found! Please Try Again After While.</h2>
+            <h2> No posts at the Moment.</h2>
           </div>
         )}
       </div>
