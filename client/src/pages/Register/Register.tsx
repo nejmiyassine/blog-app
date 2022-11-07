@@ -5,7 +5,6 @@ import { object, string, TypeOf } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-toastify';
 import { useRegisterUserMutation } from '../../redux/api/authApi';
-import '../Login/Login.scss';
 
 const registerSchema = object({
   username: string().min(1, 'username is required').max(100),

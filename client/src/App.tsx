@@ -7,7 +7,6 @@ import { router } from './routes/routes';
 // Components
 import DarkThemeButton from './components/DarkThemeButton/DarkThemeButton';
 // Style
-import './App.scss';
 
 const App: React.FC = () => {
   const isDark = useSelector((state: RootState) => state.theme.isDark);

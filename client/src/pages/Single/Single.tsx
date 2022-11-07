@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import * as Md from 'react-icons/md';
 import * as Bs from 'react-icons/bs';
@@ -9,8 +9,8 @@ import {
 } from '../../redux/api/postsApi';
 import { useAppSelector } from '../../redux/store';
 import Menu from '../../components/Menu';
-import './single.scss';
 import { getText } from '../../helpers/helpers';
+import { toast } from 'react-toastify';
 
 const Single: React.FC = () => {
   const user = useAppSelector((state) => state.user.user);
@@ -24,8 +24,25 @@ const Single: React.FC = () => {
     isLoading: isGetLoading,
     isSuccess: isGetSuccess,
     isError: isGetError,
+    error,
   } = useGetPostByIdQuery(postId);
   const [deletePost] = useDeletePostMutation();
+
+  useEffect(() => {
+    if (isGetSuccess) {
+      // window.location.href = '/login';
+      toast.success('Fetch Post Successfully');
+    }
+
+    if (isGetError) {
+      if (Array.isArray((error as any).data.error)) {
+        (error as any).data.error.forEach((el: any) => toast.error(el.message));
+      } else {
+        toast.error((error as any).data.message);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isGetLoading]);
 
   const deletePostById = () => {
     deletePost(postId);

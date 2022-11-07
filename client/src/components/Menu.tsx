@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { toast } from 'react-toastify';
 import { Post, useGetPostsByCategoryQuery } from '../redux/api/postsApi';
 
 interface MenuProps {
@@ -6,10 +7,32 @@ interface MenuProps {
 }
 
 const Menu: React.FC<MenuProps> = ({ category }) => {
-  const { data: recommendedPosts } = useGetPostsByCategoryQuery(category);
+  const {
+    data: recommendedPosts,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useGetPostsByCategoryQuery(category);
+
+  useEffect(() => {
+    if (isSuccess) {
+      // window.location.href = '/login';
+      toast.success('Fetch Posts Successfully');
+    }
+
+    if (isError) {
+      if (Array.isArray((error as any).data.error)) {
+        (error as any).data.error.forEach((el: any) => toast.error(el.message));
+      } else {
+        toast.error((error as any).data.message);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading]);
 
   return (
-    <>
+    <div>
       <h2>Posts you may like</h2>
       {recommendedPosts &&
         recommendedPosts.length > 3 &&
@@ -26,7 +49,7 @@ const Menu: React.FC<MenuProps> = ({ category }) => {
             </div>
           </div>
         ))}
-    </>
+    </div>
   );
 };
 

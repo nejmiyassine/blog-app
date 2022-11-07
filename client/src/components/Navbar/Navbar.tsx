@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { useAppSelector } from '../../redux/store';
 import { useLogoutUserMutation } from '../../redux/api/authApi';
-import { toast } from 'react-toastify';
-import './navbar.scss';
 import { logout } from '../../redux/features/auth/userSlice';
 
 const Navbar = () => {

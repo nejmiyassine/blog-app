@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import HomeHeader from '../../components/HomeHeader/HomeHeader';
 import { getText } from '../../helpers/helpers';
 import { Post, useGetAllPostsQuery } from '../../redux/api/postsApi';
-import './Home.scss';
 
 const Home: React.FC = () => {
   const category = useLocation().search;

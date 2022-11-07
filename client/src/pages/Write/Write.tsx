@@ -9,7 +9,6 @@ import {
   useUploadFileMutation,
 } from '../../redux/api/postsApi';
 import 'react-quill/dist/quill.snow.css';
-import './write.scss';
 
 const Write: React.FC = () => {
   const categories: { id: number; category: string }[] = [
@@ -75,10 +74,9 @@ const Write: React.FC = () => {
         ? updatePost({ id: state?.id, post: updateData })
         : addNewPost(postData);
       navigate('/');
-    } catch (error) {}
-
-    console.log('updateData', updateData);
-    console.log('postData', postData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
