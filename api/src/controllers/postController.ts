@@ -50,7 +50,6 @@ export const addPost = (req: Request, res: Response) => {
 
       db.query(insertPostQuery, [values], (err, data) => {
         if (err) return res.status(403).json(err);
-        console.log('add values', values);
 
         return res.json('Post has been created');
       });
@@ -103,8 +102,6 @@ export const updatePost = (req: Request, res: Response) => {
         req.body.img,
         req.body.category,
       ];
-
-      console.log('values', values);
 
       db.query(
         insertPostQuery,

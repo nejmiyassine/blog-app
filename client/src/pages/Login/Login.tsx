@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ToastContainer, toast } from 'react-toastify';
 import { useLoginUserMutation } from '../../redux/api/authApi';
 import 'react-toastify/dist/ReactToastify.css';
-import './Login.scss';
 
 const loginSchema = object({
   email: string()

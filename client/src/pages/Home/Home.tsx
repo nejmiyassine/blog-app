@@ -7,13 +7,18 @@ import { Post, useGetAllPostsQuery } from '../../redux/api/postsApi';
 const Home: React.FC = () => {
   const category = useLocation().search;
   const isCategory: string = category === '' ? '/' : category;
-  const { data } = useGetAllPostsQuery(isCategory);
+  const { data, isLoading } = useGetAllPostsQuery(isCategory);
 
   return (
     <div className='home'>
       <div className='homeHeader'>
         <HomeHeader />
       </div>
+      {isLoading && (
+        <div>
+          <h2>Loading posts at the Moment.</h2>
+        </div>
+      )}
       <div className='posts'>
         {data ? (
           data.map((post: Post) => (
@@ -53,7 +58,7 @@ const Home: React.FC = () => {
           ))
         ) : (
           <div>
-            <h2> No posts at the Moment.</h2>
+            <h2>No posts at the Moment.</h2>
           </div>
         )}
       </div>
