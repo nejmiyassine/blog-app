@@ -1,10 +1,10 @@
 import mysql from 'mysql2';
-
-const password = process.env.DBPASSWORD;
+const dotenv = require('dotenv');
+dotenv.config();
 
 export const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: 'Nejmi001!',
-  database: 'blog',
+  host: process.env.HOST,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
 });
