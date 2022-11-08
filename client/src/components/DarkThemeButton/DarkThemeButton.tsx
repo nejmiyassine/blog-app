@@ -11,16 +11,12 @@ const DarkThemeButton = () => {
   const changeTheme = () => dispatch(changeThemeMode());
 
   return (
-    <div className='buttonWrapper'>
-      <button onClick={changeTheme} className='button flex'>
+    <div className='fixed bottom-5 right-5 rounded-full bg-black text-white dark:bg-white dark:text-black'>
+      <button onClick={changeTheme} className='p-5'>
         {!isDark ? (
-          <div className='darkIcon'>
-            <Bs.BsFillMoonStarsFill />
-          </div>
+          <Bs.BsFillMoonStarsFill size={20} />
         ) : (
-          <div className='lightIcon'>
-            <Bs.BsSunFill />
-          </div>
+          <Bs.BsSunFill size={20} />
         )}
       </button>
     </div>

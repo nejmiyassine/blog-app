@@ -4,22 +4,14 @@ import type { RootState } from './redux/store';
 import { RouterProvider } from 'react-router-dom';
 // Routes
 import { router } from './routes/routes';
-// Components
-import DarkThemeButton from './components/DarkThemeButton/DarkThemeButton';
-// Style
 
 const App: React.FC = () => {
   const isDark = useSelector((state: RootState) => state.theme.isDark);
 
   return (
-    <div className={`app ${isDark ? 'dark' : 'light'}`}>
-      <div className='background text'>
-        <div className='appContainer'>
-          <div className='container'>
-            <RouterProvider router={router} />
-          </div>
-          <DarkThemeButton />
-        </div>
+    <div className={`app ${isDark && 'dark'}`}>
+      <div className='container bg-white text-black dark:bg-black dark:text-white'>
+        <RouterProvider router={router} />
       </div>
     </div>
   );
