@@ -33,19 +33,18 @@ const Menu: React.FC<MenuProps> = ({ category }) => {
 
   return (
     <div>
-      <h2>Posts you may like</h2>
-      {recommendedPosts &&
-        recommendedPosts.length > 3 &&
-        recommendedPosts.slice(0, 3).map((post: Post) => (
-          <div key={post.id}>
-            <div className='post'>
-              {post.img.includes('http') ? (
-                <img src={`${post.img}`} alt={`${post.title}`} />
-              ) : (
-                <img src={`../upload/${post.img}`} alt={`${post.title}`} />
-              )}
-              {/* <img src={post.img} alt={`${post.title}-${post.category}`} /> */}
-              <h3>{post.title}</h3>
+      <h2 className='text-lg font-bold text-center mb-2'>POSTS YOU MAY LIKE</h2>
+      {recommendedPosts?.length &&
+        recommendedPosts?.slice(0, 3).map((post: Post) => (
+          <div className='py-4 lg:py-2' key={post.id}>
+            <div className='font-bold text-lg'>
+              <img
+                className='h-[200px] w-[100%] object-fit'
+                src={`../upload/${post.img}`}
+                alt={`${post.title}`}
+              />
+
+              <h3 className=''>{post.title}</h3>
             </div>
           </div>
         ))}

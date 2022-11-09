@@ -9,8 +9,8 @@ import {
 } from '../../redux/api/postsApi';
 import { useAppSelector } from '../../redux/store';
 import Menu from '../../components/Menu';
-import { getText } from '../../helpers/helpers';
 import { toast } from 'react-toastify';
+import Loading from '../../components/Loading/Loading';
 
 const Single: React.FC = () => {
   const user = useAppSelector((state) => state.user.user);
@@ -51,72 +51,80 @@ const Single: React.FC = () => {
 
   return (
     <div className='single pl-16'>
-      {isGetLoading && (
-        <div className='d-flex justify-content-center'>
-          <div className='spinner-border' role='status'>
-            <span className='visually-hidden'>Loading...</span>
-          </div>
-        </div>
-      )}
+      {isGetLoading && <Loading />}
 
       {isGetError && (
-        <div className='alert alert-danger' role='alert'>
-          error
-        </div>
+        <div className='text-red-900 font-medium text-center mt-10'>error</div>
       )}
 
       {isGetSuccess && (
-        <>
-          <div className='content' key={postId}>
-            {data.img.includes('http') ? (
-              <img
-                className='blogimg'
-                src={`${data.img}`}
-                alt={`${data.title}`}
-              />
-            ) : (
-              <img
-                className='blogimg'
-                src={`../upload/${data.img}`}
-                alt={`${data.title}`}
-              />
-            )}
-            <div className='user'>
+        <div className='flex flex-col p-4 sm:w-[500px] lg:w-[980px] lg:flex-row lg:gap-6 xl:w-[1200px] m-auto'>
+          <div className='lg:w-2/3 xl:w-3/4' key={postId}>
+            <div className='flex items-center justify-between py-4 gap-4'>
               {!data?.userImg ? (
                 <img
-                  src='https://cricdaddy.com/wp-content/uploads/2020/08/blank-profile-picture-png.png'
+                  className='rounded-full w-10 h-10'
+                  src='https://cdn-icons-png.flaticon.com/512/4140/4140048.png'
                   alt={data?.username}
                 />
               ) : (
-                <img src={data?.userImg} alt={data?.username} />
+                <img
+                  className='rounded-full w-10 h-10'
+                  src={data?.userImg}
+                  alt={data?.username}
+                />
               )}
-              <div className='info'>
-                <span>{data?.username}</span>
-                <p>Poster {moment(data?.date).fromNow()}</p>
+              <div className='flex flex-col'>
+                <span className='font-bold text-md'>{data?.username}</span>
+                <span className='text-sm italic text-gray-400'>
+                  Poster {moment(data?.date).fromNow()}
+                </span>
               </div>
+
               {user && user?.username === data?.username && (
-                <div className='icons'>
+                <div className='flex items-center gap-2'>
                   <Link
-                    className='icon edit'
+                    className='drop-shadow-md duration-200 hover:scale-125'
                     to={`/write?edit=${postId}`}
                     state={data}
                   >
-                    <Md.MdEdit />
+                    <Md.MdEdit
+                      size={25}
+                      className='cursor-pointer text-green-500'
+                    />
                   </Link>
-                  <button className='icon delete' onClick={deletePostById}>
-                    <Bs.BsFillTrashFill />
+                  <button
+                    className='drop-shadow-md duration-200 hover:scale-125'
+                    onClick={deletePostById}
+                  >
+                    <Bs.BsFillTrashFill
+                      size={25}
+                      className='cursor-pointer text-red-500'
+                    />
                   </button>
                 </div>
               )}
             </div>
-            <h2>{data?.title}</h2>
-            {data.description && getText(data.description)}
+
+            <img
+              className='h-[200px] w-[100%] sm:h-[300px] object-cover py-4'
+              src={`../upload/${data.img}`}
+              alt={`${data.title}`}
+            />
+
+            <div className='py-4'>
+              <h2 className='text-lg font-bold pb-4'>{data?.title}</h2>
+              <div
+                className='text-md text-justify'
+                dangerouslySetInnerHTML={{ __html: data?.description }}
+              />
+            </div>
           </div>
 
-          <div className='menu'>
+          <div className='mt-6 lg:w-1/3'>
             <Menu category={data.category} />
           </div>
-        </>
+        </div>
       )}
     </div>
   );
