@@ -104,7 +104,7 @@ const Sidebar = () => {
       <div
         className={`min-h-screen ${
           open ? 'w-72' : 'w-16'
-        } bg-black text-gray-100 dark:bg-gray-100 dark:text-black px-4`}
+        } bg-gray-100 text-black dark:bg-zinc-700 dark:text-gray-100 px-4`}
       >
         {/* Sidebar Header */}
         <div
@@ -153,7 +153,7 @@ const Sidebar = () => {
           {!user && (
             <div>
               <h2
-                className={`text-2xl text-center font-semibold pb-1 ${
+                className={`text-2xl text-center font-semibold py-2 ${
                   !open && 'hidden'
                 }`}
               >
@@ -161,25 +161,28 @@ const Sidebar = () => {
               </h2>
 
               <Link
-                className='flex items-center text-sm gap-3.5 font-medium p-2 mt-2 rounded-md duration-200 hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white'
-                to='/register'
-              >
-                <h3 className={`${!open && 'hidden'}`}>Register</h3>
-                <Ai.AiOutlineLogin size={20} className='cursor-pointer' />
-              </Link>
-              <Link
-                className='flex items-center text-sm gap-3.5 font-medium p-2 mt-2 rounded-md duration-200 hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white'
+                className='flex group items-center text-sm gap-3.5 font-medium p-2 mt-2 rounded-md duration-200 hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white'
                 to='/login'
               >
-                <h3 className={`${!open && 'hidden'}`}>Login</h3>
-                <Ai.AiOutlineLogin size={20} className='cursor-pointer' />
+                <h3 className={`${!open && 'hidden'}`}>Login or Register</h3>
+                <Ai.AiOutlineLogin
+                  size={20}
+                  className={`${!open && 'pt-8'}'cursor-pointer'`}
+                />
+                <h3
+                  className={`${
+                    open && 'hidden'
+                  } absolute left-32 font-medium whitespace-pre text-white w-0 overflow-hidden bg-black dark:bg-gray-100 dark:text-black rounded-md drop-shadow-lg px-0 py-0 group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit`}
+                >
+                  Login or Register
+                </h3>
               </Link>
             </div>
           )}
         </div>
 
         {/* Sidebar User */}
-        <div className=''>
+        <div>
           {user && (
             <div>
               <h2

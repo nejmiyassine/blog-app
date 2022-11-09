@@ -7,6 +7,9 @@ module.exports = {
       zIndex: {
         100: '100',
       },
+      fontFamily: {
+        dancing: ['Dancing Script', 'cursive'],
+      },
     },
   },
   plugins: [],
