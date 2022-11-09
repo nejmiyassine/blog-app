@@ -11,11 +11,10 @@ const Profile = () => {
   const userPosts = posts?.filter(
     ({ uid }: { uid: number }) => user?.id === uid
   );
-  // date / Description / img
 
   return (
     <div className='pl-16'>
-      <div className='p-4 flex flex-col gap-4 justify-center md:w-[1000px] md:m-auto'>
+      <div className='p-4 flex flex-col gap-4 justify-center md:w-[700px] lg:w-[950px] md:m-auto'>
         <h2 className='text-center font-bold text-lg'>Profile Page</h2>
         <div className='flex flex-col gap-2 items-center justify-center'>
           <img
@@ -42,8 +41,8 @@ const Profile = () => {
           {posts && <Table posts={posts} />}
 
           <div className='grid grid-cols-1 gap-6 md:hidden'>
-            {posts &&
-              posts.map(({ id, img, title, description, category }) => (
+            {userPosts &&
+              userPosts?.map(({ id, img, title, description, category }) => (
                 <div
                   className='bg-gray-100 dark:bg-zinc-800 rounded-lg p-4 shadow'
                   key={id}

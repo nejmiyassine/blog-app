@@ -156,7 +156,11 @@ const Write: React.FC = () => {
           ))}
         </div>
 
-        <div></div>
+        {state ? (
+          <button type='submit' >Update</button>
+        ) : (
+          <button type='submit'>Post</button>
+        )}
       </div>
     </form>
   );

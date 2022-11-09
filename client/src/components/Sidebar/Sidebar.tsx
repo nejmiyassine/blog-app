@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import * as Ai from 'react-icons/ai';
 import * as Hi from 'react-icons/hi';
 import * as Md from 'react-icons/md';
@@ -23,6 +23,7 @@ interface Menus {
 
 const Sidebar = () => {
   const [open, setOpen] = useState<boolean>(false);
+  const [err, setErr] = useState('');
   const handleSidebar = () => setOpen(!open);
 
   const menus: Menus[] = [
@@ -79,16 +80,19 @@ const Sidebar = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      // window.location.href = '/login';
       toast.success('you logged out successfully');
       navigate('/login');
     }
 
     if (isError) {
       if (Array.isArray((error as any).data.error)) {
-        (error as any).data.error.forEach((el: any) => toast.error(el.message));
+        (error as any).data.error.forEach((el: any) => {
+          setErr(el.message);
+          return toast.error(el.message);
+        });
       } else {
         toast.error((error as any).data.message);
+        setErr((error as any).data.message);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -101,10 +105,12 @@ const Sidebar = () => {
 
   return (
     <div className='flex gap-6 fixed drop-shadow-2xl z-[100]'>
+      {err && <div className='text-sm text-red-500'>{err}</div>}
+
       <div
         className={`min-h-screen ${
           open ? 'w-72' : 'w-16'
-        } bg-gray-100 text-black dark:bg-zinc-700 dark:text-gray-100 px-4`}
+        } bg-gray-100 text-black dark:bg-zinc-700 dark:shadow-gray-200 dark:text-gray-100 px-4`}
       >
         {/* Sidebar Header */}
         <div
@@ -134,7 +140,7 @@ const Sidebar = () => {
           {menus &&
             menus.map(({ id, name, link, icon }: Menus) => (
               <Link
-                className='flex group items-center text-sm gap-3.5 font-medium p-2 mt-2 rounded-md duration-200 hover:bg-white hover:text-black dark:hover:bg-black dark:hover:text-white'
+                className='flex group items-center text-sm gap-3.5 font-medium p-2 mt-2 rounded-md duration-200 hover:bg-gray-300 hover:text-black dark:hover:bg-gray-500 dark:hover:text-white'
                 to={link}
                 key={id}
               >

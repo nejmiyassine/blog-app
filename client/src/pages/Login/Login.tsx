@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { object, string, TypeOf } from 'zod';
@@ -27,6 +27,7 @@ const Login: React.FC = () => {
   // ? API Login Mutation
   const [loginUser, { isLoading, isError, error, isSuccess }] =
     useLoginUserMutation();
+  const [err, setErr] = useState('');
 
   const navigate = useNavigate();
 
@@ -34,7 +35,7 @@ const Login: React.FC = () => {
     register,
     reset,
     handleSubmit,
-    formState: { isSubmitSuccessful },
+    formState: { isSubmitSuccessful, errors },
   } = methods;
 
   useEffect(() => {
@@ -45,8 +46,12 @@ const Login: React.FC = () => {
 
     if (isError) {
       if (Array.isArray((error as any).data.error)) {
-        (error as any).data.error.forEach((el: any) => toast.error(el.message));
+        (error as any).data.error.forEach((el: any) => {
+          setErr(el.message);
+          return toast.error(el.message);
+        });
       } else {
+        setErr((error as any).data.error);
         toast.error((error as any).data.message);
       }
     }
@@ -68,6 +73,8 @@ const Login: React.FC = () => {
   return (
     <div className='h-screen flex flex-col items-center justify-center'>
       <ToastContainer />
+      {err && <div className='text-sm text-red-500'>{err}</div>}
+
       <div className='flex flex-row-reverse h-[400px] md:w-[750px] lg:w-[1000px]'>
         <div className='hidden h-[100%] md:block md:w-1/2'>
           <img
@@ -90,13 +97,17 @@ const Login: React.FC = () => {
             </label>
             <br />
             <input
-              className='mt-2 w-[100%] border border-gray-300 placeholder:text-gray-400 p-2 bg-transparent placeholder:text-sm'
+              className='mt-2 w-[100%] text-sm border border-gray-300 placeholder:text-gray-400 p-2 bg-transparent placeholder:text-sm'
               type='email'
               id='email'
               {...register('email')}
               placeholder='Enter your Email'
-              required
             />
+            {errors['email'] ? (
+              <p className='font-sm text-red-500'>{errors['email'].message}</p>
+            ) : (
+              ''
+            )}
           </div>
 
           <div>
@@ -105,14 +116,20 @@ const Login: React.FC = () => {
             </label>
             <br />
             <input
-              className='mt-2 w-[100%] border border-gray-300 placeholder:text-gray-400 p-2 bg-transparent placeholder:text-sm'
+              className='mt-2 w-[100%] text-sm border border-gray-300 placeholder:text-gray-400 p-2 bg-transparent placeholder:text-sm'
               type='password'
               {...register('password')}
               id='password'
               placeholder='********'
               autoComplete='false'
-              required
             />
+            {errors['password'] ? (
+              <p className='font-sm text-red-500'>
+                {errors['password'].message}
+              </p>
+            ) : (
+              ''
+            )}
           </div>
 
           <button

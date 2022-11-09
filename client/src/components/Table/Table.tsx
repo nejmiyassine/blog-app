@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAppSelector } from '../../redux/store';
 import { shortText } from '../../helpers/helpers';
 
 interface ITable {
@@ -8,11 +9,14 @@ interface ITable {
   title: string;
   description: string;
   category: string;
+  uid: number;
 }
 
 type TableProps = ITable[];
 
 const Table = ({ posts }: { posts: TableProps }) => {
+  const user = useAppSelector((state) => state.user.user);
+
   return (
     <div className='overflow-auto rounded-lg shadow my-4 hidden md:block'>
       <table className='w-full'>
@@ -37,25 +41,27 @@ const Table = ({ posts }: { posts: TableProps }) => {
         </thead>
         <tbody className='divide-y divide-gray-200 dark:divide-white dark:bg-gray-700'>
           {posts &&
-            posts?.map(({ id, img, title, description, category }: ITable) => (
-              <tr key={id}>
-                <td className='p-3 text-sm whitespace-nowrap'>{id}</td>
-                <td className='p-3 text-sm whitespace-nowrap'>
-                  <img
-                    className='object-cover'
-                    src={`./upload/${img}`}
-                    alt={`${title}-${id}`}
-                  />
-                </td>
-                <td className='p-3 text-sm whitespace-nowrap'>
-                  <Link to={`/post/${id}`}>{title}</Link>
-                </td>
-                <td className='p-3 text-sm whitespace-nowrap'>
-                  {shortText(description, 100)}
-                </td>
-                <td className='p-3 text-sm whitespace-nowrap'>{category}</td>
-              </tr>
-            ))}
+            posts
+              ?.filter(({ uid }) => user?.id === uid)
+              ?.map(({ id, img, title, description, category }: ITable) => (
+                <tr key={id}>
+                  <td className='p-3 text-sm whitespace-nowrap'>{id}</td>
+                  <td className='p-3 text-sm whitespace-nowrap'>
+                    <img
+                      className='object-cover'
+                      src={`./upload/${img}`}
+                      alt={`${title}-${id}`}
+                    />
+                  </td>
+                  <td className='p-3 text-sm whitespace-nowrap'>
+                    <Link to={`/post/${id}`}>{title}</Link>
+                  </td>
+                  <td className='p-3 text-sm whitespace-nowrap'>
+                    {shortText(description, 100)}
+                  </td>
+                  <td className='p-3 text-sm whitespace-nowrap'>{category}</td>
+                </tr>
+              ))}
         </tbody>
       </table>
     </div>

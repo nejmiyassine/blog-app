@@ -21,6 +21,7 @@ const persistConfig = {
   version: 1,
   storage,
   whitelist: ['user', 'theme'],
+  blacklist: ['postsApi'],
 };
 
 const reducer = combineReducers({

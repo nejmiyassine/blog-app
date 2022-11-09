@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { object, string, TypeOf } from 'zod';
@@ -30,6 +30,7 @@ const Register: React.FC = () => {
 
   const [registerUser, { isLoading, isSuccess, error, isError }] =
     useRegisterUserMutation();
+  const [err, setErr] = useState(null);
 
   const navigate = useNavigate();
 
@@ -37,7 +38,7 @@ const Register: React.FC = () => {
     register,
     reset,
     handleSubmit,
-    formState: { isSubmitSuccessful },
+    formState: { isSubmitSuccessful, errors },
   } = methods;
 
   useEffect(() => {
@@ -49,15 +50,13 @@ const Register: React.FC = () => {
     if (isError) {
       console.log(error);
       if (Array.isArray((error as any).data.error)) {
-        (error as any).data.error.forEach((el: any) =>
-          toast.error(el.message, {
-            position: 'top-right',
-          })
-        );
-      } else {
-        toast.error((error as any).data.message, {
-          position: 'top-right',
+        (error as any).data.error.forEach((el: any) => {
+          setErr(el.message);
+          return toast.error(el.message);
         });
+      } else {
+        setErr((error as any).data.error);
+        toast.error((error as any).data.message);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,6 +77,7 @@ const Register: React.FC = () => {
   return (
     <div className='h-screen flex flex-col items-center justify-center'>
       <ToastContainer />
+      {err && <div className='text-sm text-red-500'>{err}</div>}
 
       <div className='flex flex-row-reverse h-[600px] md:w-[750px] lg:w-[1000px]'>
         <div className='hidden h-[100%] md:block md:w-1/2'>
@@ -102,13 +102,20 @@ const Register: React.FC = () => {
             </label>
 
             <input
-              className='mt-2 w-[100%] border border-gray-300 placeholder:text-gray-400 p-2 bg-transparent placeholder:text-sm'
+              className='mt-2 text-sm w-[100%] border text-sm border-gray-300 placeholder:text-gray-400 p-2 bg-transparent placeholder:text-sm'
               type='text'
               id='username'
               {...register('username')}
               placeholder='Username'
-              required
             />
+
+            {errors['username'] ? (
+              <p className='font-sm text-red-500'>
+                {errors['username'].message}
+              </p>
+            ) : (
+              ''
+            )}
           </div>
 
           <div>
@@ -117,13 +124,18 @@ const Register: React.FC = () => {
             </label>
 
             <input
-              className='mt-2 w-[100%] border border-gray-300 placeholder:text-gray-400 p-2 bg-transparent placeholder:text-sm'
+              className='mt-2 text-sm w-[100%] border border-gray-300 placeholder:text-gray-400 p-2 bg-transparent placeholder:text-sm'
               type='email'
               id='email'
               {...register('email')}
               placeholder='Email Address'
-              required
             />
+
+            {errors['email'] ? (
+              <p className='font-sm text-red-500'>{errors['email'].message}</p>
+            ) : (
+              ''
+            )}
           </div>
 
           <div>
@@ -132,30 +144,43 @@ const Register: React.FC = () => {
             </label>
 
             <input
-              className='mt-2 w-[100%] border border-gray-300 placeholder:text-gray-400 p-2 bg-transparent placeholder:text-sm'
+              className='mt-2 text-sm w-[100%] border border-gray-300 placeholder:text-gray-400 p-2 bg-transparent placeholder:text-sm'
               type='password'
               id='password'
               {...register('password')}
               placeholder='********'
               autoComplete='false'
-              required
             />
+
+            {errors['password'] ? (
+              <p className='font-sm text-red-500'>
+                {errors['password'].message}
+              </p>
+            ) : (
+              ''
+            )}
           </div>
 
           <div>
-            <label htmlFor='cpassword' className='font-semibold'>
+            <label htmlFor='passwordConfirm' className='font-semibold'>
               Confirm Password
             </label>
 
             <input
-              className='mt-2 w-[100%] border border-gray-300 placeholder:text-gray-400 p-2 bg-transparent placeholder:text-sm'
+              className='mt-2 text-sm w-[100%] border border-gray-300 placeholder:text-gray-400 p-2 bg-transparent placeholder:text-sm'
               type='password'
-              id='cpassword'
+              id='passwordConfirm'
               {...register('passwordConfirm')}
               placeholder='********'
               autoComplete='false'
-              required
             />
+            {errors['passwordConfirm'] ? (
+              <p className='font-sm text-red-500'>
+                {errors['passwordConfirm'].message}
+              </p>
+            ) : (
+              ''
+            )}
           </div>
 
           <div className='authLinks flex flex-col'>
@@ -171,7 +196,7 @@ const Register: React.FC = () => {
             <p className='text-zinc-500 text-sm italic'>
               Already have a Medlog account?
             </p>
-            <Link className='pl-2 font-semibold hover:underline' to='/register'>
+            <Link className='pl-2 font-semibold hover:underline' to='/login'>
               Sign in
             </Link>
           </div>

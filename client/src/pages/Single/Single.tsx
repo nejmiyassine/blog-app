@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import * as Md from 'react-icons/md';
 import * as Bs from 'react-icons/bs';
@@ -14,6 +14,7 @@ import Loading from '../../components/Loading/Loading';
 
 const Single: React.FC = () => {
   const user = useAppSelector((state) => state.user.user);
+  const [err, setErr] = useState('');
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -30,14 +31,18 @@ const Single: React.FC = () => {
 
   useEffect(() => {
     if (isGetSuccess) {
-      // window.location.href = '/login';
       toast.success('Fetch Post Successfully');
+      console.log('Fetch Post Successfully');
     }
 
     if (isGetError) {
       if (Array.isArray((error as any).data.error)) {
-        (error as any).data.error.forEach((el: any) => toast.error(el.message));
+        (error as any).data.error.forEach((el: any) => {
+          setErr(el.message);
+          return toast.error(el.message);
+        });
       } else {
+        setErr((error as any).data.error);
         toast.error((error as any).data.message);
       }
     }
@@ -53,9 +58,7 @@ const Single: React.FC = () => {
     <div className='single pl-16'>
       {isGetLoading && <Loading />}
 
-      {isGetError && (
-        <div className='text-red-900 font-medium text-center mt-10'>error</div>
-      )}
+      {err && <div className='text-sm text-red-500'>{err}</div>}
 
       {isGetSuccess && (
         <div className='flex flex-col p-4 sm:w-[500px] lg:w-[980px] lg:flex-row lg:gap-6 xl:w-[1200px] m-auto'>
