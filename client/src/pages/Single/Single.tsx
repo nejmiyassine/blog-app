@@ -50,7 +50,7 @@ const Single: React.FC = () => {
   };
 
   return (
-    <div className='single'>
+    <div className='single pl-16'>
       {isGetLoading && (
         <div className='d-flex justify-content-center'>
           <div className='spinner-border' role='status'>

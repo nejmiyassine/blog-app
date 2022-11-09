@@ -10,7 +10,7 @@ const App: React.FC = () => {
 
   return (
     <div className={`app ${isDark && 'dark'}`}>
-      <div className='container bg-white text-black dark:bg-black dark:text-white'>
+      <div className='container min-h-screen min-w-full bg-white text-black dark:bg-black dark:text-white'>
         <RouterProvider router={router} />
       </div>
     </div>

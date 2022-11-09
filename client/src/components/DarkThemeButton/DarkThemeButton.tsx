@@ -11,12 +11,12 @@ const DarkThemeButton = () => {
   const changeTheme = () => dispatch(changeThemeMode());
 
   return (
-    <div className='fixed bottom-5 right-5 rounded-full bg-black text-white dark:bg-white dark:text-black'>
-      <button onClick={changeTheme} className='p-5'>
+    <div className='fixed bottom-5 right-[50%] translate-x-[50%] rounded-full bg-white dark:bg-black'>
+      <button onClick={changeTheme} className='p-3'>
         {!isDark ? (
-          <Bs.BsFillMoonStarsFill size={20} />
+          <Bs.BsFillMoonStarsFill size={20} className='text-purple-900' />
         ) : (
-          <Bs.BsSunFill size={20} />
+          <Bs.BsSunFill size={20} className='text-yellow-100' />
         )}
       </button>
     </div>

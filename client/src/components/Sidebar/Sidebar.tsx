@@ -27,6 +27,12 @@ const Sidebar = () => {
 
   const menus: Menus[] = [
     {
+      id: 0,
+      name: 'Home',
+      link: '/',
+      icon: <Ai.AiOutlineHome size={20} className='cursor-pointer' />,
+    },
+    {
       id: 1,
       name: 'Art',
       link: '/?category=art',
@@ -108,7 +114,7 @@ const Sidebar = () => {
         >
           <div className={`flex ${!open && 'hidden'}`}>
             <Link to={'/'}>
-              <h2 className='title'>Medlog</h2>
+              <h2 className='font-semibold text-lg italic'>Medlog</h2>
             </Link>
           </div>
           <div onClick={handleSidebar}>
@@ -137,7 +143,7 @@ const Sidebar = () => {
                 <h3
                   className={`${
                     open && 'hidden'
-                  } absolute left-48 font-medium whitespace-pre text-white w-0 overflow-hidden bg-black rounded-md drop-shadow-lg px-0 py-0 group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit`}
+                  } absolute left-48 font-medium whitespace-pre text-white w-0 overflow-hidden bg-black dark:bg-gray-100 dark:text-black rounded-md drop-shadow-lg px-0 py-0 group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit`}
                 >
                   {name}
                 </h3>
@@ -193,7 +199,7 @@ const Sidebar = () => {
               </div>
               <div className='cursor-pointer p-2'>
                 <button className='flex items-center' onClick={onLogoutHandler}>
-                  <Ai.AiOutlineLogout size={20} />
+                  <Ai.AiOutlineLogout size={18} />
                   <span className={`pl-3 font-medium ${!open && 'hidden'}`}>
                     Logout
                   </span>
