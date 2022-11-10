@@ -56,7 +56,10 @@ const Profile = () => {
                         </span>
                       </div>
 
-                      <Link to={`/post/${id}`} className='flex justify-between'>
+                      <Link
+                        to={`/post/${id}`}
+                        className='flex justify-between items-center'
+                      >
                         <img
                           className='h-10 w-10 object-cover'
                           src={`../upload/${img}`}

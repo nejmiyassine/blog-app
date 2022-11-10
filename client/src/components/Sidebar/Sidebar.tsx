@@ -108,7 +108,7 @@ const Sidebar = () => {
       {err && <div className='text-sm text-red-500'>{err}</div>}
 
       <div
-        className={`min-h-screen ${
+        className={`h-screen ${
           open ? 'w-72' : 'w-16'
         } bg-gray-100 text-black dark:bg-zinc-700 dark:shadow-gray-200 dark:text-gray-100 px-4`}
       >
