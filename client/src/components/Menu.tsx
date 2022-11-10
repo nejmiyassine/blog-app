@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Post, useGetPostsByCategoryQuery } from '../redux/api/postsApi';
 
@@ -17,7 +18,6 @@ const Menu: React.FC<MenuProps> = ({ category }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      // window.location.href = '/login';
       toast.success('Fetch Posts Successfully');
     }
 
@@ -37,14 +37,16 @@ const Menu: React.FC<MenuProps> = ({ category }) => {
       {recommendedPosts?.length &&
         recommendedPosts?.slice(0, 3).map((post: Post) => (
           <div className='py-4 lg:py-2' key={post.id}>
-            <div className='font-bold text-lg'>
+            <div className='my-2'>
               <img
-                className='h-[200px] w-[100%] object-fit'
+                className='rounded-lg h-[200px] w-[100%] object-fit'
                 src={`../upload/${post.img}`}
                 alt={`${post.title}`}
               />
 
-              <h3 className=''>{post.title}</h3>
+              <Link to={`/post/${post.id}`}>
+                <h3 className='font-bold text-lg mt-1'>{post.title}</h3>
+              </Link>
             </div>
           </div>
         ))}

@@ -45,6 +45,8 @@ const Login: React.FC = () => {
     }
 
     if (isError) {
+      toast.error((error as any).data);
+
       if (Array.isArray((error as any).data.error)) {
         (error as any).data.error.forEach((el: any) => {
           setErr(el.message);
@@ -72,7 +74,6 @@ const Login: React.FC = () => {
 
   return (
     <div className='h-screen flex flex-col items-center justify-center'>
-      <ToastContainer />
       {err && <div className='text-sm text-red-500'>{err}</div>}
 
       <div className='flex flex-row-reverse h-[400px] md:w-[750px] lg:w-[1000px]'>
@@ -149,6 +150,7 @@ const Login: React.FC = () => {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };

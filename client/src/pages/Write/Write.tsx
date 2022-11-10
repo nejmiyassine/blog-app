@@ -9,6 +9,7 @@ import {
   useUploadFileMutation,
 } from '../../redux/api/postsApi';
 import 'react-quill/dist/quill.snow.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 const Write: React.FC = () => {
   const categories: { id: number; category: string }[] = [
@@ -74,7 +75,7 @@ const Write: React.FC = () => {
         : addNewPost(postData);
       navigate('/');
     } catch (error) {
-      console.log(error);
+      toast.error((error as any).data.message);
     }
   };
 
@@ -157,11 +158,12 @@ const Write: React.FC = () => {
         </div>
 
         {state ? (
-          <button type='submit' >Update</button>
+          <button type='submit'>Update</button>
         ) : (
           <button type='submit'>Post</button>
         )}
       </div>
+      <ToastContainer />
     </form>
   );
 };

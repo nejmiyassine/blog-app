@@ -49,6 +49,8 @@ const Register: React.FC = () => {
 
     if (isError) {
       console.log(error);
+      toast.error((error as any).data);
+
       if (Array.isArray((error as any).data.error)) {
         (error as any).data.error.forEach((el: any) => {
           setErr(el.message);
@@ -202,6 +204,7 @@ const Register: React.FC = () => {
           </div>
         </form>
       </div>
+      <ToastContainer />
     </div>
   );
 };
