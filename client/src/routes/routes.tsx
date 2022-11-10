@@ -1,5 +1,5 @@
 import React from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 // Pages
 import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
@@ -23,6 +23,10 @@ export const router = createBrowserRouter([
       {
         path: '/post/:postId',
         element: <Single />,
+      },
+      {
+        path: '/*',
+        element: <Navigate to='/' />,
       },
     ],
   },
